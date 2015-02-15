@@ -1,0 +1,73 @@
+<html>
+    <head>
+      <link rel="stylesheet" href="/stylesheets/style.css">
+   </head>
+   <body>
+      
+      <div class="left">
+         <div >
+            <p class="number"></p>
+            <p class="infosNumber">Shorten links</p>
+         </div>
+         <div >
+            <p class="number"></p>
+            <p class="infosNumber">Visited Links</p>
+         </div>
+         
+      </div>
+      <div class="right">
+         <form class="forms" method="POST" id="form">
+            <input type="url" name="urlToShort" id="urlToShort" />
+            <input type="button" class="button" name="btnShorten" id="btnShorten" value="Add" />
+         </form>
+         <table id="tableUrls">
+            {% for urlGetted in tabData %}
+            <tr>
+               <td>
+                  <div class="url"> {{ urlGetted.url }} </div>
+                  <div class="url2"><a href="{{ urlGetted.url }}" id="urls" name="shortedUrl">{{ urlGetted.urlShorted }} </a></div>      
+               </td>
+            </tr>
+            {% endfor %}
+        </table>
+      </div>
+      <script type="text/javascript">
+
+			var btnShorten = document.getElementById("btnShorten");
+			btnShorten.addEventListener("click", sendRequestShorten);
+         
+			function sendRequestShorten() {
+            
+				var urlToShort = document.getElementById("urlToShort").value;
+            
+            var expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+            var regex = new RegExp(expression);
+
+            if (!urlToShort.match(regex) ) {
+               alert("Put an URL please (http(s)://example.com)");
+               return;
+            }
+
+				var xhr = new XMLHttpRequest();
+            
+				xhr.onreadystatechange = function putUrlShorted() {
+					if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+                  				
+					}
+				};
+				xhr.open("POST", "", true);
+				xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            
+				xhr.send(['urlToShort=', urlToShort].join(''));
+			}
+      </script>
+   </body>
+</html>
+
+
+
+
+
+
+
+
