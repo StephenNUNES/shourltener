@@ -1,0 +1,50 @@
+<html>
+   <head>
+      <link rel="stylesheet" href="/stylesheets/style.css">
+   </head>
+	<body>
+		<h1>ShoUrLtener - An url shortener</h1>
+      <form class="formulaire" method="POST" id="form">
+         <input type="url" name="urlToShort" id="urlToShort" />
+         <input type="button" class="button" name="btnShorten" id="btnShorten" value="Shourlten" />
+         <div class="shortedUrl">
+            <a href="" id="shortedUrl" name="shortedUrl"></a>
+         </div>
+      </form>
+      
+		<script type="text/javascript">
+
+			var btnShorten = document.getElementById("btnShorten");
+			btnShorten.addEventListener("click", sendRequestShorten);
+         
+			function sendRequestShorten() {
+            
+				var urlToShort = document.getElementById("urlToShort").value;
+            
+            var expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+            var regex = new RegExp(expression);
+
+            if (!urlToShort.match(regex) ) {
+               alert("Put an URL please (http(s)://example.com)");
+               return;
+            }
+
+				var xhr = new XMLHttpRequest();
+				xhr.onreadystatechange = function putUrlShorted() {
+					if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+                  var objectSended = eval('(' + xhr.responseText+ ')');
+						shortedUrl.setAttribute('href', objectSended.url);
+						shortedUrl.innerHTML = objectSended.shortedUrl;						
+					}
+				};
+				xhr.open("POST", "", true);
+				xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            
+				xhr.send(['urlToShort=', urlToShort].join(''));
+			}
+      </script>
+	</body>
+</html>
+
+
+
